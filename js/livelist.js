@@ -105,6 +105,7 @@
 	  })
 	  console.log(JSON.stringify(data))
 	  //console.log(encodeURIComponent(JSON.stringify(data)))
+	  return JSON.stringify(data)
     }
 
   }
