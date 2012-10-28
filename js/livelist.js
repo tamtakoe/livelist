@@ -24,7 +24,6 @@
 
   , init: function (type, element, template, options) {
 	  var a = this
-	  
       this.type = type
 	  this.template = template
       this.$element = $(element)
@@ -38,14 +37,14 @@
 	  })
 	  
 	  this.makeList(options)	  
-	  this.addItem()
+	  this.addItem()	  
     }
   
   , editItem: function ($item, options) {
       var $linegen = $item.find('input.linegen')
 	  var $closebtn = $item.find('.close')
       for (var key in options) if (options[key] === 'default') options[key] = $.fn.livelist.defaults[key]
-	  $item.data('itemOptions',$.extend({}, $.fn.livelist.defaults, options))
+	  $item.data().itemOptions = $.extend({}, $.fn.livelist.defaults, $item.data('itemOptions'), options)
 	  if (typeof options.description === 'string') $linegen.val(options.description)
       if (typeof options.editable === 'boolean') options.editable === true ? $linegen.removeAttr('disabled') : $linegen.attr('disabled','disabled')
 	  if (typeof options.deletable === 'boolean') options.deletable === true ? $closebtn.show() : $closebtn.hide()
@@ -68,19 +67,18 @@
 	  }
   }
 	
-  , makeList: function (optionsList) {
+  , makeList: function (options) {
       this.$list = $([]);
-	  for (var i=0; i<optionsList.length; i++) {	  
-		  var options = $.extend({}, $.fn.livelist.defaults, optionsList[i])
+	  for (var i=0; i<options.length; i++) {	  
 		  var $item = $(this.template)
-		  this.editItem($item, options)
+		  this.editItem($item, options[i])
 		  this.$list = this.$list.add($item);	  
 	  }
 	  this.$list.appendTo(this.$element)
   }
   
   , addItem: function () {
-	  var $item = $(this.template).data('itemOptions', $.fn.livelist.defaults)
+	  var $item = $(this.template)
 	  this.editItem($item, {sortable:false, deletable:false})
 	  $item.appendTo(this.$element)
     }
