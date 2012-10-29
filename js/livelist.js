@@ -23,90 +23,88 @@
     constructor: Livelist
 
   , init: function (type, element, template, options) {
-	  var a = this
+      var a = this
       this.type = type
-	  this.template = template
+      this.template = template
       this.$element = $(element)
 
-	  this.$element.on( 'keyup', 'input.linegen', function(){
-	    a.checkLastItem()
-	  })
+      this.$element.on( 'keyup', 'input.linegen', function(){
+	  a.checkLastItem()
+      })
 	  
-	  this.$element.on( 'click', '.close', function(e){
-		a.delItem($(e.target).parent())
-	  })
+      this.$element.on( 'click', '.close', function(e){
+          a.delItem($(e.target).parent())
+      })
 	  
-	  this.makeList(options)	  
-	  this.addItem()	  
-    }
+      this.makeList(options)	  
+          this.addItem()	  
+      }
   
   , editItem: function ($item, options) {
       var $linegen = $item.find('input.linegen')
-	  var $closebtn = $item.find('.close')
+      var $closebtn = $item.find('.close')
       for (var key in options) if (options[key] === 'default') options[key] = $.fn.livelist.defaults[key]
-	  $item.data().itemOptions = $.extend({}, $.fn.livelist.defaults, $item.data('itemOptions'), options)
-	  if (typeof options.description === 'string') $linegen.val(options.description)
+      $item.data().itemOptions = $.extend({}, $.fn.livelist.defaults, $item.data('itemOptions'), options)
+      if (typeof options.description === 'string') $linegen.val(options.description)
       if (typeof options.editable === 'boolean') options.editable === true ? $linegen.removeAttr('disabled') : $linegen.attr('disabled','disabled')
-	  if (typeof options.deletable === 'boolean') options.deletable === true ? $closebtn.show() : $closebtn.hide()
-	  if (typeof options.sortable === 'boolean') options.sortable === true ? $item.addClass('sortable') : $item.removeClass('sortable')
+      if (typeof options.deletable === 'boolean') options.deletable === true ? $closebtn.show() : $closebtn.hide()
+      if (typeof options.sortable === 'boolean') options.sortable === true ? $item.addClass('sortable') : $item.removeClass('sortable')
   }
   
   , recordInputData: function ($item) {
       $item.data('itemOptions').description = $item.find('input.linegen').val()
-	  $item.data('itemOptions').note = $item.find('input.note').val()
+      $item.data('itemOptions').note = $item.find('input.note').val()
   }
   
   , checkLastItem: function () {
       var $lastitem = this.$element.children().eq(-1)
-	  if ($lastitem.find('input.linegen').val() !== '') {
-		this.editItem($lastitem, {sortable:'default', deletable:'default'})
-		this.addItem()
-	  } else if ($lastitem.prev().find('input.linegen').val() === '' && $lastitem.prev().data('itemOptions').deletable !== false) {
-		this.editItem($lastitem.prev(), {sortable:false, deletable:false})
-		this.delItem($lastitem)
-	  }
+      if ($lastitem.find('input.linegen').val() !== '') {
+          this.editItem($lastitem, {sortable:'default', deletable:'default'})
+          this.addItem()
+      } else if ($lastitem.prev().find('input.linegen').val() === '' && $lastitem.prev().data('itemOptions').deletable !== false) {
+          this.editItem($lastitem.prev(), {sortable:false, deletable:false})
+          this.delItem($lastitem)
+      }
   }
 	
   , makeList: function (options) {
       this.$list = $([]);
-	  for (var i=0; i<options.length; i++) {	  
-		  var $item = $(this.template)
-		  this.editItem($item, options[i])
-		  this.$list = this.$list.add($item);	  
-	  }
-	  this.$list.appendTo(this.$element)
+      for (var i=0; i<options.length; i++) {	  
+          var $item = $(this.template)
+          this.editItem($item, options[i])
+          this.$list = this.$list.add($item);	  
+      }
+      this.$list.appendTo(this.$element)
   }
   
   , addItem: function () {
-	  var $item = $(this.template)
-	  this.editItem($item, {sortable:false, deletable:false})
-	  $item.appendTo(this.$element)
+      var $item = $(this.template)
+      this.editItem($item, {sortable:false, deletable:false})
+      $item.appendTo(this.$element)
     }
 	
   , delItem: function ($item) {
-	  $item.remove()
+      $item.remove()
     }
 	
   , save: function () {
       var a = this
-	  var data = []
-	  var datalength = this.$element.children().length-1
+      var data = []
+      var datalength = this.$element.children().length-1
       this.$element.children().each(function(i) {
-		if (i < datalength) {
-			var $b = $(this)
-			if (typeof $b.data('itemOptions') !=='undefined') {
-				a.recordInputData($b)
-				var op = $b.data('itemOptions')
-				data.push({'type': op.type, 'description': op.description, 'note': op.note})
-			}
-		}
-	  })
-	  console.log(JSON.stringify(data))
-	  //console.log(encodeURIComponent(JSON.stringify(data)))
-	  return JSON.stringify(data)
-    }
-
+          if (i < datalength) {
+              var $b = $(this)
+              if (typeof $b.data('itemOptions') !=='undefined') {
+                  a.recordInputData($b)
+                  var op = $b.data('itemOptions')
+                  data.push({'type': op.type, 'description': op.description, 'note': op.note})
+              }
+          }
+      })
+      console.log(JSON.stringify(data))
+      return JSON.stringify(data)
   }
+}
 
 
  /* LIVELIST PLUGIN DEFINITION
