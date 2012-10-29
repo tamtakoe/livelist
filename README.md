@@ -3,7 +3,20 @@ livelist
 
 list with dinamyc-added field
 
-Список с динамически-добавляемыми полями
+РЎРїРёСЃРѕРє СЃ РґРёРЅР°РјРёС‡РµСЃРєРё-РґРѕР±Р°РІР»СЏРµРјС‹РјРё РїРѕР»СЏРјРё
 
-Пример:
+РљР°Рє РїРѕРґРєР»СЋС‡Р°С‚СЊ:
+<pre>
+$(document).ready(function() {
+  var template = '&lt;div&gt;&lt;input type="checkbox" class="flag"&gt;&lt;input type="text" class="linegen"&gt;&lt;a href="#" class="close"&gt;Г—&lt;/a&gt;&lt;/div&gt;'
+  var data = [{description:'Р»СЏ-Р»СЏ', sortable:false, deletable:false},{description:'СЌ'}]
+  $('#cont').livelist(template, data).sortable({axis: 'y', items:'.sortable'});
+
+  $('#save').on('click', function(){
+    $('#cont').livelist().data().livelist.save()
+  })
+});
+</pre>
+РџСЂРёРјРµСЂ:
 http://tamtakoe.github.com/livelist/
+		
