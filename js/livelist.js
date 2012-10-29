@@ -101,7 +101,6 @@
               }
           }
       })
-      console.log(JSON.stringify(data))
       return JSON.stringify(data)
   }
 }
