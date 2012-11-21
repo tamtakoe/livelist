@@ -16,15 +16,16 @@ $(document).ready(function() {
   })
 });
 </pre>
-Шаблон элементов берется из html-содержимого #cont, которое затем удаляется.
-Выходные данные содержат информацию из полей с data-ll-атрибутами
-<div id="cont">
-  <div>
-    <input type="checkbox" class="flag" data-ll="flag">
-    <input type="text" class="linegen" data-ll="description"></input>
-    <a href="#" class="close">×</a>
-  </div>
-</div>
+Шаблон для элементов берется из html-содержимого #cont, которое перед генерацией списка удаляется.
+Выходные данные содержат информацию из полей с data-ll-атрибутами.
+<pre>
+&lt;div id="cont"&gt;
+  &lt;div&gt;
+    &lt;input type="checkbox" class="flag" data-ll="flag"&gt;
+    &lt;input type="text" class="linegen" data-ll="description"&gt;&lt;/input&gt;
+    &lt;a href="#" class="close"&gt;×&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
 </pre>
 Работающий пример:
 http://tamtakoe.github.com/livelist/
