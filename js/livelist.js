@@ -1,10 +1,7 @@
 /* ===========================================================
- * livelist.js v0.8
+ * livelist.js v0.9
  * http://github.com/tamtakoe/livelist
- * Created by Oleg Istomin 2012
  * ========================================================== */
-
-
 
 !function ($) {
 
