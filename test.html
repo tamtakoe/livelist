@@ -8,16 +8,20 @@
 	<body>
 		<script>
 			$(document).ready(function() {
-				var template = '<div><input type="checkbox" class="flag"><input type="text" class="linegen"></input><a href="#" class="close">×</a></div>'
 				var data = [{description:'ля-ля', sortable:false, deletable:false},{description:'э'}]
-				$('#cont').livelist(template, data).sortable({axis: 'y', items:'.sortable'});
+				$('#cont').livelist(data).sortable({axis: 'y', items:'.sortable'});
 
 				$('#save').on('click', function(){
 				  $('#cont').livelist().data().livelist.save()
 				})
 			});
 		</script>
-		<div id="cont"></div>
+		<div id="cont">
+			<div>
+				<input type="checkbox" class="flag"><input type="text" class="linegen"></input>
+				<a href="#" class="close">×</a>
+			</div>
+		</div>
 		<button id="save">Save</button>
 	</body>
 </html>
