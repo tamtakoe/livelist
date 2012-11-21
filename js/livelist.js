@@ -63,6 +63,10 @@
 			default:
 				switch ($data[0].tagName) {
 					case 'INPUT': $data.val(v)
+<<<<<<< HEAD
+=======
+					//alert(v)
+>>>>>>> 55a8158d402bc2132fe432caa48eb051ace64707
 						if ($data.filter('[type="checkbox"]').length) v == 'on' ? $data.attr('checked','checked') : $data.removeAttr('checked')
 						break
 					case 'TEXTAREA': $data.html(v); break
