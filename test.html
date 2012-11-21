@@ -8,17 +8,20 @@
 	<body>
 		<script>
 			$(document).ready(function() {
-				var data = [{description:'ля-ля', sortable:false, deletable:false},{description:'э'}]
-				$('#cont').livelist(data).sortable({axis: 'y', items:'.sortable'});
+				var data = [{description:'Адрес 1', sortable:false, deletable:false, editable:false}, {description:'Адрес 2', flag:'off'}]
+				$("#cont").livelist(data).sortable({axis: 'y', items:'.sortable'});
 
 				$('#save').on('click', function(){
-				  $('#cont').livelist().data().livelist.save()
+				  alert($('#cont').livelist().data().livelist.save())
 				})
 			});
 		</script>
+		<h1>Образец</h1>
+		<p>Добавление нескольких адресов. Первый адрес показан всегда
 		<div id="cont">
 			<div>
-				<input type="checkbox" class="flag"><input type="text" class="linegen"></input>
+				<input type="checkbox" class="flag" data-ll="flag">
+				<input type="text" class="linegen" data-ll="description"></input>
 				<a href="#" class="close">×</a>
 			</div>
 		</div>

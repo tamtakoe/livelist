@@ -23,17 +23,9 @@
 	  var a = this
       this.type = type
       this.$element = $(element)
-	  this.$element.find('[data-ll]').each(function() {
-		var $this = $(this)
-		var defoption = $.fn.livelist.defaults[$this.attr('data-ll')]
-		switch ($this[0].nodeName.toLowerCase()) {
-			case 'input': defoption = $this.val(); break
-			case 'textarea': defoption = $this.html(''); break
-			default: defoption = $this.attr('value')
-		}
-	  })
+	  this.recordInputData($.fn.livelist.defaults, this.$element)
 	  this.template = this.$element.html()
-	  this.$element.html('')
+	  this.$element.empty()
 
 	  this.$element.on( 'keyup', 'input.linegen', function(){
 	    a.checkLastItem()
@@ -48,28 +40,46 @@
     }
   
   , editItem: function ($item, options) {
+      var $linegen = $item.find('input.linegen')
 	  var $closebtn = $item.find('.close')
-      for (var key in options) if (options[key] === 'default') options[key] = $.fn.livelist.defaults[key]
+      for (var k in options) if (options[k] === 'default') options[k] = $.fn.livelist.defaults[k]
 	  $item.data().itemOptions = $.extend({}, $item.data('itemOptions'), options)
-      if (typeof options.editable === 'boolean') {
-		  if (options.editable === true) {
-			$description.removeAttr('disabled')
-		  } else {
-			$description.attr('disabled','disabled')
-		  }
-	  }
-	  if (typeof options.deletable === 'boolean') options.deletable === true ? $closebtn.show() : $closebtn.hide()
-	  if (typeof options.sortable === 'boolean') options.sortable === true ? $item.addClass('sortable') : $item.removeClass('sortable')
+	    
+	  var $datum = $item.find('[data-ll]')
+	  $.each(options, function(k, v) {
+		var $data = $datum.filter('[data-ll='+ k +']')	
+		switch (k) {
+			case 'editable': 
+				if (v === true) {
+					$linegen.removeAttr('disabled')
+					$item.find('.dropdown-pills').removeAttr('disabled')
+				} else {
+					$linegen.attr('disabled','disabled')
+					$item.find('.dropdown-pills').attr('disabled','disabled')
+				}
+				break
+			case 'deletable': v === true ? $closebtn.show() : $closebtn.hide(); break
+			case 'sortable': v === true ? $item.addClass('sortable') : $item.removeClass('sortable'); break
+			default:
+				switch ($data[0].tagName) {
+					case 'INPUT': $data.val(v)
+						if ($data.filter('[type="checkbox"]').length) v == 'on' ? $data.attr('checked','checked') : $data.removeAttr('checked')
+						break
+					case 'TEXTAREA': $data.html(v); break
+					default: $data.attr('value', v)
+				}
+		}
+	  })
   }
   
-  , recordInputData: function ($item) {
-	  $item.find('[data-ll]').each(function() {
+  , recordInputData: function (destination, $item) {
+  	  $item.find('[data-ll]').each(function() {
 		var $this = $(this)
-		var defoption = $.fn.livelist.defaults[$this.attr('data-ll')]
-		switch ($this[0].nodeName.toLowerCase()) {
-			case 'input': defoption = $this.val(); break
-			case 'textarea': defoption = $this.html(''); break
-			default: defoption = $this.attr('value')
+		var optionName = $this.attr('data-ll')
+		switch ($this[0].tagName) {
+			case 'INPUT': destination[optionName] = $this.val(); break
+			case 'TEXTAREA': destination[optionName] = $this.html(''); break
+			default: destination[optionName] = $this.attr('value')
 		}
 	  })
   }
@@ -113,13 +123,7 @@
 	  var data = []
 	  var datalength = this.$element.children().length-1
       this.$element.children().each(function(i) {
-		if (i < datalength) {
-			var $b = $(this)
-			if (typeof $b.data('itemOptions') !=='undefined') {
-				a.recordInputData($b)
-				data.push($b.data('itemOptions'))
-			}
-		}
+		if (i < datalength) a.recordInputData(data[i] = {}, $(this))
 	  })
 	  return JSON.stringify(data)
     }
